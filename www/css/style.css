@@ -26,20 +26,3 @@ body {
     background-color: #349beb;
     color: white;
 }
-
-.wrapper {
-    display: grid;
-    grid-template-columns: 1fr 2fr 1fr;
-    gap: 10px;
-    margin: 10px;
-    grid-auto-rows: minmax(100px, auto);
-}
-
-.output {
-    resize: none;
-}
-
-.selectAll {
-    background-color: #349beb;
-    color: white;
-}
