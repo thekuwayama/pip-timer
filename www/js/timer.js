@@ -1,5 +1,8 @@
+const INTERVAL_MILLI_SECOND = 1000;
+const DEFAULT_REMAINING_TIME = 25 * 60000;
+
 let endTime = null;
-let remainingTime = 25 * 60000;
+let remainingTime = DEFAULT_REMAINING_TIME;
 let timerInterval = null;
 
 const formatTime = (time) => {
@@ -17,7 +20,7 @@ const start = (target) => {
     timerInterval = window.setInterval(() => {
         remainingTime = endTime - Date.now();
         target.innerHTML = formatTime(remainingTime);
-    }, 1000);
+    }, INTERVAL_MILLI_SECOND);
 }
 
 const stop = () => {
@@ -32,7 +35,7 @@ const reset = (target) => {
 
     stop();
     endTime = null;
-    remainingTime = 25 * 60000;
+    remainingTime = DEFAULT_REMAINING_TIME;
     target.innerHTML = formatTime(remainingTime);
 }
 
