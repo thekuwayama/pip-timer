@@ -17,7 +17,7 @@ const start = (target) => {
     timerInterval = window.setInterval(() => {
         remainingTime = endTime - Date.now();
         target.innerHTML = formatTime(remainingTime);
-    }, 500);
+    }, 1000);
 }
 
 const stop = () => {
