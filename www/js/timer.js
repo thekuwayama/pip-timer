@@ -13,11 +13,11 @@ const start = (target) => {
     if (!target) return;
     if (timerInterval) return;
 
-    endTime = new Date(Date.now() + 25 * 60000);
+    endTime = new Date(Date.now() + remainingTime);
     timerInterval = window.setInterval(() => {
         remainingTime = endTime - Date.now();
         target.innerHTML = formatTime(remainingTime);
-    }, 1000);
+    }, 500);
 }
 
 const stop = () => {
