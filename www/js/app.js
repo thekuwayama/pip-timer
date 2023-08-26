@@ -1,10 +1,7 @@
-// import
 import '../css/style.css'
+import { start, stop, reset } from './timer'
 
-// init
 const open = document.getElementById('open');
-
-// function
 open.addEventListener('click', async () => {
     const timer = document.getElementById('timer');
 
@@ -15,6 +12,20 @@ open.addEventListener('click', async () => {
     timer.removeAttribute('style');
     pipWindow.document.body.append(timer);
     open.disabled = true;
+
+    const time = pipWindow.document.getElementById('time');
+    const startBtn = pipWindow.document.getElementById('start');
+    const stopBtn = pipWindow.document.getElementById('stop');
+    const resetBtn = pipWindow.document.getElementById('reset');
+    startBtn?.addEventListener('click', () => {
+        start(time);
+    });
+    stopBtn?.addEventListener('click', () => {
+        stop();
+    });
+    resetBtn?.addEventListener('click', () => {
+        reset(time);
+    });
 
     // close PiP
     pipWindow.addEventListener('unload', (event) => {
