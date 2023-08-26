@@ -3,7 +3,7 @@ name: gh pages deploy
 on:
   push:
     branches:
-      - main
+      - feat__gh_pages
 
 jobs:
   deploy:
