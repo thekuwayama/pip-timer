@@ -455,7 +455,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   stop: () => (/* binding */ stop)
 /* harmony export */ });
 const INTERVAL_MILLI_SECOND = 1000;
-const DEFAULT_REMAINING_TIME = 25 * 60000;
+const DEFAULT_REMAINING_TIME = 25 * 60 * 1000;
 
 let endTime = null;
 let remainingTime = DEFAULT_REMAINING_TIME;
@@ -471,11 +471,17 @@ const formatTime = (time) => {
 const start = (target) => {
     if (!target) return;
     if (timerInterval) return;
+    if (remainingTime == 0) return;
 
     endTime = new Date(Date.now() + remainingTime);
     timerInterval = window.setInterval(() => {
         remainingTime = endTime - Date.now();
-        target.innerHTML = formatTime(remainingTime);
+        if (remainingTime >= 0) {
+            target.innerHTML = formatTime(remainingTime);
+        } else {
+            stop();
+            // TODO: beep
+        }
     }, INTERVAL_MILLI_SECOND);
 }
 
