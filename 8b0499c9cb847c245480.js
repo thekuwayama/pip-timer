@@ -476,11 +476,13 @@ const start = (target) => {
     endTime = new Date(Date.now() + remainingTime);
     timerInterval = window.setInterval(() => {
         remainingTime = endTime - Date.now();
-        if (remainingTime >= 0) {
+        if (remainingTime <= 0) {
+            remainingTime = 0;
             target.innerHTML = formatTime(remainingTime);
-        } else {
             stop();
             // TODO: beep
+        } else {
+            target.innerHTML = formatTime(remainingTime);
         }
     }, INTERVAL_MILLI_SECOND);
 }
