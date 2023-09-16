@@ -3,7 +3,7 @@
 [![CI](https://github.com/thekuwayama/pip-timer/workflows/CI/badge.svg)](https://github.com/thekuwayama/pip-timer/actions?workflow=CI)
 [![license](https://img.shields.io/badge/license-MIT-brightgreen.svg)](https://raw.githubusercontent.com/thekuwayama/pip-timer/main/LICENSE.txt)
 
-`pip-timer` is Picture-in-Picture timer(25 minutes).
+`pip-timer` is Picture-in-Picture timer.
 
 
 ## Usage
