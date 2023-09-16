@@ -457,9 +457,9 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ });
 const INTERVAL_MILLI_SECOND = 1000;
 
-let defaultRemainingTime = 25 * 60 * 1000;
+let defaultRemainingTime = null;
 let endTime = null;
-let remainingTime = defaultRemainingTime;
+let remainingTime = null;
 let timerInterval = null;
 
 const formatTime = (time) => {
@@ -470,10 +470,15 @@ const formatTime = (time) => {
 }
 
 const setTimer = (target, time) => {
-    defaultRemainingTime = time;
-    if (target.innerHTML.trim() == "") {
-        target.innerHTML = formatTime(time);
+    if (defaultRemainingTime != time) {
+        defaultRemainingTime = time;
     }
+
+    if (remainingTime == null) {
+        remainingTime = defaultRemainingTime;
+    }
+
+    target.innerHTML = formatTime(remainingTime);
 }
 
 const start = (target) => {
