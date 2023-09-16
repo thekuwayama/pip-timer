@@ -451,14 +451,15 @@ module.exports = function (cssWithMappingToString) {
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   reset: () => (/* binding */ reset),
+/* harmony export */   setTimer: () => (/* binding */ setTimer),
 /* harmony export */   start: () => (/* binding */ start),
 /* harmony export */   stop: () => (/* binding */ stop)
 /* harmony export */ });
 const INTERVAL_MILLI_SECOND = 1000;
-const DEFAULT_REMAINING_TIME = 25 * 60 * 1000;
 
+let defaultRemainingTime = 25 * 60 * 1000;
 let endTime = null;
-let remainingTime = DEFAULT_REMAINING_TIME;
+let remainingTime = defaultRemainingTime;
 let timerInterval = null;
 
 const formatTime = (time) => {
@@ -466,6 +467,13 @@ const formatTime = (time) => {
     const minutes = date.getMinutes().toString().padStart(2, '0');
     const seconds = date.getSeconds().toString().padStart(2, '0');
     return minutes + ':' + seconds;
+}
+
+const setTimer = (target, time) => {
+    defaultRemainingTime = time;
+    if (target.innerHTML.trim() == "") {
+        target.innerHTML = formatTime(time);
+    }
 }
 
 const start = (target) => {
@@ -499,7 +507,7 @@ const reset = (target) => {
 
     stop();
     endTime = null;
-    remainingTime = DEFAULT_REMAINING_TIME;
+    remainingTime = defaultRemainingTime;
     target.innerHTML = formatTime(remainingTime);
 }
 
@@ -591,6 +599,7 @@ __webpack_require__.r(__webpack_exports__);
 
 const open = document.getElementById('open');
 open.addEventListener('click', async () => {
+    const minutes = document.getElementById('minutes');
     const timer = document.getElementById('timer');
 
     // open PiP
@@ -599,12 +608,15 @@ open.addEventListener('click', async () => {
 
     timer.removeAttribute('style');
     pipWindow.document.body.append(timer);
+    minutes.disabled = true;
     open.disabled = true;
+
 
     const time = pipWindow.document.getElementById('time');
     const startBtn = pipWindow.document.getElementById('start');
     const stopBtn = pipWindow.document.getElementById('stop');
     const resetBtn = pipWindow.document.getElementById('reset');
+    (0,_timer__WEBPACK_IMPORTED_MODULE_1__.setTimer)(time, minutes.value * 60 * 1000);
     startBtn?.addEventListener('click', () => {
         (0,_timer__WEBPACK_IMPORTED_MODULE_1__.start)(time);
     });
@@ -623,6 +635,7 @@ open.addEventListener('click', async () => {
         const timer = event.target.getElementById('timer');
         timer.style.display = 'none';
         container?.append(timer);
+        minutes.disabled = false;
         open.disabled = false;
     });
 });
