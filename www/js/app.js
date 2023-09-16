@@ -1,8 +1,9 @@
 import '../css/style.css'
-import { start, stop, reset } from './timer'
+import { start, stop, reset, setTimer } from './timer'
 
 const open = document.getElementById('open');
 open.addEventListener('click', async () => {
+    const minutes = document.getElementById('minutes');
     const timer = document.getElementById('timer');
 
     // open PiP
@@ -11,12 +12,15 @@ open.addEventListener('click', async () => {
 
     timer.removeAttribute('style');
     pipWindow.document.body.append(timer);
+    minutes.disabled = true;
     open.disabled = true;
+
 
     const time = pipWindow.document.getElementById('time');
     const startBtn = pipWindow.document.getElementById('start');
     const stopBtn = pipWindow.document.getElementById('stop');
     const resetBtn = pipWindow.document.getElementById('reset');
+    setTimer(time, minutes.value * 60 * 1000);
     startBtn?.addEventListener('click', () => {
         start(time);
     });
@@ -35,6 +39,7 @@ open.addEventListener('click', async () => {
         const timer = event.target.getElementById('timer');
         timer.style.display = 'none';
         container?.append(timer);
+        minutes.disabled = false;
         open.disabled = false;
     });
 });

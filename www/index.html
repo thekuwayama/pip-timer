@@ -13,13 +13,19 @@
       <a href="https://github.com/thekuwayama/pip-timer" target="_blank" rel="noopener noreferrer">GitHub</a>
     </div>
 
-    <button id="open">
-      open
-    </button>
+    <div id="setting">
+      <label>minutes:</label>
+      <form>
+        <input id="minutes" type="number" min="1" max="60" value="25"/>
+      </form>
+      <button id="open">
+        open
+      </button>
+    </div>
 
     <div id="container">
       <div id="timer" style="display: none">
-        <span id="time" class="time">25:00</span>
+        <span id="time" class="time"></span>
         <div class="btns">
           <button id="start" type="button">start</button>
           <button id="stop" type="button">stop</button>

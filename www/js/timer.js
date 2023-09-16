@@ -1,8 +1,8 @@
 const INTERVAL_MILLI_SECOND = 1000;
-const DEFAULT_REMAINING_TIME = 25 * 60 * 1000;
 
+let defaultRemainingTime = 25 * 60 * 1000;
 let endTime = null;
-let remainingTime = DEFAULT_REMAINING_TIME;
+let remainingTime = defaultRemainingTime;
 let timerInterval = null;
 
 const formatTime = (time) => {
@@ -10,6 +10,13 @@ const formatTime = (time) => {
     const minutes = date.getMinutes().toString().padStart(2, '0');
     const seconds = date.getSeconds().toString().padStart(2, '0');
     return minutes + ':' + seconds;
+}
+
+const setTimer = (target, time) => {
+    defaultRemainingTime = time;
+    if (target.innerHTML.trim() == "") {
+        target.innerHTML = formatTime(time);
+    }
 }
 
 const start = (target) => {
@@ -43,8 +50,8 @@ const reset = (target) => {
 
     stop();
     endTime = null;
-    remainingTime = DEFAULT_REMAINING_TIME;
+    remainingTime = defaultRemainingTime;
     target.innerHTML = formatTime(remainingTime);
 }
 
-export { start, stop, reset }
+export { start, stop, reset, setTimer }
