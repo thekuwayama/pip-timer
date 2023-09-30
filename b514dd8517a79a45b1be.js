@@ -450,6 +450,7 @@ module.exports = function (cssWithMappingToString) {
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   isStarted: () => (/* binding */ isStarted),
 /* harmony export */   reset: () => (/* binding */ reset),
 /* harmony export */   setTimer: () => (/* binding */ setTimer),
 /* harmony export */   start: () => (/* binding */ start),
@@ -474,11 +475,8 @@ const setTimer = (target, time) => {
         defaultRemainingTime = time;
     }
 
-    if (remainingTime == null) {
-        remainingTime = defaultRemainingTime;
-    }
-
-    target.innerHTML = formatTime(remainingTime);
+    remainingTime = time;
+    target.innerHTML = formatTime(time);
 }
 
 const start = (target) => {
@@ -505,15 +503,19 @@ const stop = () => {
 
     window.clearInterval(timerInterval);
     timerInterval = null;
+    endTime = null;
 }
 
 const reset = (target) => {
     if (!target) return;
 
     stop();
-    endTime = null;
     remainingTime = defaultRemainingTime;
     target.innerHTML = formatTime(remainingTime);
+}
+
+const isStarted = () => {
+    return remainingTime != defaultRemainingTime;
 }
 
 
@@ -604,7 +606,6 @@ __webpack_require__.r(__webpack_exports__);
 
 const open = document.getElementById('open');
 open.addEventListener('click', async () => {
-    const minutes = document.getElementById('minutes');
     const timer = document.getElementById('timer');
 
     // open PiP
@@ -613,23 +614,37 @@ open.addEventListener('click', async () => {
 
     timer.removeAttribute('style');
     pipWindow.document.body.append(timer);
-    minutes.disabled = true;
     open.disabled = true;
 
-
+    const minutes = pipWindow.document.getElementById('minutes');
     const time = pipWindow.document.getElementById('time');
     const startBtn = pipWindow.document.getElementById('start');
     const stopBtn = pipWindow.document.getElementById('stop');
     const resetBtn = pipWindow.document.getElementById('reset');
-    (0,_timer__WEBPACK_IMPORTED_MODULE_1__.setTimer)(time, minutes.value * 60 * 1000);
+
+    if (!(0,_timer__WEBPACK_IMPORTED_MODULE_1__.isStarted)()) {
+        (0,_timer__WEBPACK_IMPORTED_MODULE_1__.setTimer)(time, minutes.value * 60 * 1000);
+    }
+
+    minutes?.addEventListener('click', () => {
+        if ((0,_timer__WEBPACK_IMPORTED_MODULE_1__.isStarted)()) {
+            return
+        }
+
+        (0,_timer__WEBPACK_IMPORTED_MODULE_1__.setTimer)(time, minutes.value * 60 * 1000);
+    });
     startBtn?.addEventListener('click', () => {
         (0,_timer__WEBPACK_IMPORTED_MODULE_1__.start)(time);
+        minutes.disabled = true;
     });
     stopBtn?.addEventListener('click', () => {
         (0,_timer__WEBPACK_IMPORTED_MODULE_1__.stop)();
+        minutes.disabled = false;
     });
     resetBtn?.addEventListener('click', () => {
         (0,_timer__WEBPACK_IMPORTED_MODULE_1__.reset)(time);
+        (0,_timer__WEBPACK_IMPORTED_MODULE_1__.setTimer)(time, minutes.value * 60 * 1000);
+        minutes.disabled = false;
     });
 
     // close PiP
@@ -640,7 +655,6 @@ open.addEventListener('click', async () => {
         const timer = event.target.getElementById('timer');
         timer.style.display = 'none';
         container?.append(timer);
-        minutes.disabled = false;
         open.disabled = false;
     });
 });
