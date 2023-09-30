@@ -17,11 +17,8 @@ const setTimer = (target, time) => {
         defaultRemainingTime = time;
     }
 
-    if (remainingTime == null) {
-        remainingTime = defaultRemainingTime;
-    }
-
-    target.innerHTML = formatTime(remainingTime);
+    remainingTime = time;
+    target.innerHTML = formatTime(time);
 }
 
 const start = (target) => {
@@ -48,15 +45,19 @@ const stop = () => {
 
     window.clearInterval(timerInterval);
     timerInterval = null;
+    endTime = null;
 }
 
 const reset = (target) => {
     if (!target) return;
 
     stop();
-    endTime = null;
     remainingTime = defaultRemainingTime;
     target.innerHTML = formatTime(remainingTime);
 }
 
-export { start, stop, reset, setTimer }
+const isStarted = () => {
+    return remainingTime != defaultRemainingTime;
+}
+
+export { start, stop, reset, setTimer, isStarted }
