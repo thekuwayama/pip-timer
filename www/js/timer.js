@@ -1,9 +1,7 @@
-const INTERVAL_MILLI_SECOND = 1000;
-
 let defaultRemainingTime = null;
 let endTime = null;
 let remainingTime = null;
-let timerInterval = null;
+let requestID = null;
 
 const formatTime = (time) => {
     const date = new Date(time);
@@ -22,12 +20,11 @@ const setTimer = (target, time) => {
 }
 
 const start = (target) => {
-    if (!target) return;
-    if (timerInterval) return;
+    if (requestID) return;
     if (remainingTime == 0) return;
 
     endTime = new Date(Date.now() + remainingTime);
-    timerInterval = window.setInterval(() => {
+    const doStart = () => {
         remainingTime = endTime - Date.now();
         if (remainingTime <= 0) {
             remainingTime = 0;
@@ -36,21 +33,22 @@ const start = (target) => {
             // TODO: beep
         } else {
             target.innerHTML = formatTime(remainingTime);
+            requestID = requestAnimationFrame(doStart);
         }
-    }, INTERVAL_MILLI_SECOND);
+    };
+
+    requestAnimationFrame(doStart);
 }
 
 const stop = () => {
-    if (!timerInterval) return;
+    if (!requestID) return;
 
-    window.clearInterval(timerInterval);
-    timerInterval = null;
+    cancelAnimationFrame(requestID);
+    requestID = null;
     endTime = null;
 }
 
 const reset = (target) => {
-    if (!target) return;
-
     stop();
     remainingTime = defaultRemainingTime;
     target.innerHTML = formatTime(remainingTime);
