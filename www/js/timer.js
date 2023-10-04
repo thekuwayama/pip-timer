@@ -48,10 +48,9 @@ const stop = () => {
     endTime = null;
 }
 
-const reset = (target) => {
+const reset = () => {
     stop();
     remainingTime = defaultRemainingTime;
-    target.innerHTML = formatTime(remainingTime);
 }
 
 const isStarted = () => {
