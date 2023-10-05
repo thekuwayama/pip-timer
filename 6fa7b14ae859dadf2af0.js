@@ -456,12 +456,10 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   start: () => (/* binding */ start),
 /* harmony export */   stop: () => (/* binding */ stop)
 /* harmony export */ });
-const INTERVAL_MILLI_SECOND = 1000;
-
 let defaultRemainingTime = null;
 let endTime = null;
 let remainingTime = null;
-let timerInterval = null;
+let requestID = null;
 
 const formatTime = (time) => {
     const date = new Date(time);
@@ -480,12 +478,11 @@ const setTimer = (target, time) => {
 }
 
 const start = (target) => {
-    if (!target) return;
-    if (timerInterval) return;
+    if (requestID) return;
     if (remainingTime == 0) return;
 
     endTime = new Date(Date.now() + remainingTime);
-    timerInterval = window.setInterval(() => {
+    const doStart = () => {
         remainingTime = endTime - Date.now();
         if (remainingTime <= 0) {
             remainingTime = 0;
@@ -494,24 +491,24 @@ const start = (target) => {
             // TODO: beep
         } else {
             target.innerHTML = formatTime(remainingTime);
+            requestID = requestAnimationFrame(doStart);
         }
-    }, INTERVAL_MILLI_SECOND);
+    };
+
+    requestAnimationFrame(doStart);
 }
 
 const stop = () => {
-    if (!timerInterval) return;
+    if (!requestID) return;
 
-    window.clearInterval(timerInterval);
-    timerInterval = null;
+    cancelAnimationFrame(requestID);
+    requestID = null;
     endTime = null;
 }
 
-const reset = (target) => {
-    if (!target) return;
-
+const reset = () => {
     stop();
     remainingTime = defaultRemainingTime;
-    target.innerHTML = formatTime(remainingTime);
 }
 
 const isStarted = () => {
@@ -604,6 +601,33 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
+const minutes = document.getElementById('minutes');
+const time = document.getElementById('time');
+const startBtn = document.getElementById('start');
+const stopBtn = document.getElementById('stop');
+const resetBtn = document.getElementById('reset');
+
+minutes?.addEventListener('click', () => {
+    if ((0,_timer__WEBPACK_IMPORTED_MODULE_1__.isStarted)()) {
+        return
+    }
+
+    (0,_timer__WEBPACK_IMPORTED_MODULE_1__.setTimer)(time, minutes.value * 60 * 1000);
+});
+startBtn?.addEventListener('click', () => {
+    (0,_timer__WEBPACK_IMPORTED_MODULE_1__.start)(time);
+    minutes.disabled = true;
+});
+stopBtn?.addEventListener('click', () => {
+    (0,_timer__WEBPACK_IMPORTED_MODULE_1__.stop)();
+    minutes.disabled = false;
+});
+resetBtn?.addEventListener('click', () => {
+    (0,_timer__WEBPACK_IMPORTED_MODULE_1__.reset)(time);
+    (0,_timer__WEBPACK_IMPORTED_MODULE_1__.setTimer)(time, minutes.value * 60 * 1000);
+    minutes.disabled = false;
+});
+
 const open = document.getElementById('open');
 open.addEventListener('click', async () => {
     const timer = document.getElementById('timer');
@@ -618,34 +642,10 @@ open.addEventListener('click', async () => {
 
     const minutes = pipWindow.document.getElementById('minutes');
     const time = pipWindow.document.getElementById('time');
-    const startBtn = pipWindow.document.getElementById('start');
-    const stopBtn = pipWindow.document.getElementById('stop');
-    const resetBtn = pipWindow.document.getElementById('reset');
 
     if (!(0,_timer__WEBPACK_IMPORTED_MODULE_1__.isStarted)()) {
         (0,_timer__WEBPACK_IMPORTED_MODULE_1__.setTimer)(time, minutes.value * 60 * 1000);
     }
-
-    minutes?.addEventListener('click', () => {
-        if ((0,_timer__WEBPACK_IMPORTED_MODULE_1__.isStarted)()) {
-            return
-        }
-
-        (0,_timer__WEBPACK_IMPORTED_MODULE_1__.setTimer)(time, minutes.value * 60 * 1000);
-    });
-    startBtn?.addEventListener('click', () => {
-        (0,_timer__WEBPACK_IMPORTED_MODULE_1__.start)(time);
-        minutes.disabled = true;
-    });
-    stopBtn?.addEventListener('click', () => {
-        (0,_timer__WEBPACK_IMPORTED_MODULE_1__.stop)();
-        minutes.disabled = false;
-    });
-    resetBtn?.addEventListener('click', () => {
-        (0,_timer__WEBPACK_IMPORTED_MODULE_1__.reset)(time);
-        (0,_timer__WEBPACK_IMPORTED_MODULE_1__.setTimer)(time, minutes.value * 60 * 1000);
-        minutes.disabled = false;
-    });
 
     // close PiP
     pipWindow.addEventListener('unload', (event) => {
