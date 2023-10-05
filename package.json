@@ -20,6 +20,6 @@
         "build:pre": "rm -rf public",
         "build:webpack": "webpack",
         "build": "run-s build:pre build:webpack",
-        "start": "cd public && http-server -o --ssl --key ../fixtures/localhost.key --cert ../fixtures/localhost.crt"
+        "start": "cd public && http-server -o --ssl --key ../fixtures/localhost.key --cert ../fixtures/localhost.crt --port 4433"
     }
 }
