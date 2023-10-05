@@ -1,6 +1,33 @@
 import '../css/style.css'
 import { start, stop, reset, setTimer, isStarted } from './timer'
 
+const minutes = document.getElementById('minutes');
+const time = document.getElementById('time');
+const startBtn = document.getElementById('start');
+const stopBtn = document.getElementById('stop');
+const resetBtn = document.getElementById('reset');
+
+minutes?.addEventListener('click', () => {
+    if (isStarted()) {
+        return
+    }
+
+    setTimer(time, minutes.value * 60 * 1000);
+});
+startBtn?.addEventListener('click', () => {
+    start(time);
+    minutes.disabled = true;
+});
+stopBtn?.addEventListener('click', () => {
+    stop();
+    minutes.disabled = false;
+});
+resetBtn?.addEventListener('click', () => {
+    reset(time);
+    setTimer(time, minutes.value * 60 * 1000);
+    minutes.disabled = false;
+});
+
 const open = document.getElementById('open');
 open.addEventListener('click', async () => {
     const timer = document.getElementById('timer');
@@ -15,34 +42,10 @@ open.addEventListener('click', async () => {
 
     const minutes = pipWindow.document.getElementById('minutes');
     const time = pipWindow.document.getElementById('time');
-    const startBtn = pipWindow.document.getElementById('start');
-    const stopBtn = pipWindow.document.getElementById('stop');
-    const resetBtn = pipWindow.document.getElementById('reset');
 
     if (!isStarted()) {
         setTimer(time, minutes.value * 60 * 1000);
     }
-
-    minutes?.addEventListener('click', () => {
-        if (isStarted()) {
-            return
-        }
-
-        setTimer(time, minutes.value * 60 * 1000);
-    });
-    startBtn?.addEventListener('click', () => {
-        start(time);
-        minutes.disabled = true;
-    });
-    stopBtn?.addEventListener('click', () => {
-        stop();
-        minutes.disabled = false;
-    });
-    resetBtn?.addEventListener('click', () => {
-        reset(time);
-        setTimer(time, minutes.value * 60 * 1000);
-        minutes.disabled = false;
-    });
 
     // close PiP
     pipWindow.addEventListener('unload', (event) => {
