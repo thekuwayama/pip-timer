@@ -491,6 +491,8 @@ const start = (target, audio, bell) => {
             play(audio, bell);
         } else {
             target.innerHTML = formatTime(remainingTime);
+            // setInterval() だとバックグランドタブにて、
+            // スロットリングされしまうため requestAnimationFrame() を使用します。
             requestID = requestAnimationFrame(doStart);
         }
     };
