@@ -8,6 +8,8 @@ const startBtn = document.getElementById('start');
 const stopBtn = document.getElementById('stop');
 const resetBtn = document.getElementById('reset');
 
+let audio = document.createElement('audio');
+
 minutes?.addEventListener('click', () => {
     if (isStarted()) {
         return
@@ -16,7 +18,7 @@ minutes?.addEventListener('click', () => {
     setTimer(time, minutes.value * 60 * 1000);
 });
 startBtn?.addEventListener('click', () => {
-    start(time, bell);
+    start(time, audio, bell);
     minutes.disabled = true;
 });
 stopBtn?.addEventListener('click', () => {
