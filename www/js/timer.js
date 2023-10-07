@@ -41,7 +41,7 @@ const start = (target, bell) => {
 }
 
 const play = (base64) => {
-    let sound = new Audio("data:audio/mp3;base64," + base64);
+    let sound = new Audio('data:audio/mp3;base64,' + base64);
     sound.play();
 }
 
