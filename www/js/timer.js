@@ -19,7 +19,7 @@ const setTimer = (target, time) => {
     target.innerHTML = formatTime(time);
 }
 
-const start = (target) => {
+const start = (target, bell) => {
     if (requestID) return;
     if (remainingTime == 0) return;
 
@@ -30,7 +30,7 @@ const start = (target) => {
             remainingTime = 0;
             target.innerHTML = formatTime(remainingTime);
             stop();
-            // TODO: beep
+            play(bell);
         } else {
             target.innerHTML = formatTime(remainingTime);
             requestID = requestAnimationFrame(doStart);
@@ -38,6 +38,11 @@ const start = (target) => {
     };
 
     requestAnimationFrame(doStart);
+}
+
+const play = (base64) => {
+    let sound = new Audio("data:audio/mp3;base64," + base64);
+    sound.play();
 }
 
 const stop = () => {

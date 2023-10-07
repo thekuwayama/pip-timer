@@ -1,5 +1,6 @@
 import '../css/style.css'
 import { start, stop, reset, setTimer, isStarted } from './timer'
+import { bell } from './bell'
 
 const minutes = document.getElementById('minutes');
 const time = document.getElementById('time');
@@ -15,7 +16,7 @@ minutes?.addEventListener('click', () => {
     setTimer(time, minutes.value * 60 * 1000);
 });
 startBtn?.addEventListener('click', () => {
-    start(time);
+    start(time, bell);
     minutes.disabled = true;
 });
 stopBtn?.addEventListener('click', () => {
