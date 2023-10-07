@@ -20,6 +20,7 @@
         "build:pre": "rm -rf public",
         "build:webpack": "webpack",
         "build": "run-s build:pre build:webpack",
+        "$comment": "DocumentPictureInPicture': Opening a PiP window requires https or file protocol at HTMLButtonElement.<anonymous>",
         "start": "cd public && http-server -o --ssl --key ../fixtures/localhost.key --cert ../fixtures/localhost.crt --port 4433"
     }
 }
