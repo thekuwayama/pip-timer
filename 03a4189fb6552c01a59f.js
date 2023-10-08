@@ -478,7 +478,7 @@ const setTimer = (clock, progress, time) => {
     loadProgress(progress);
 }
 
-const start = (clock, progress, audio, bell) => {
+const start = (clock, progress, bell) => {
     if (requestID) return;
     if (remainingTime == 0) return;
 
@@ -490,7 +490,7 @@ const start = (clock, progress, audio, bell) => {
             clock.innerHTML = formatTime(remainingTime);
             loadProgress(progress);
             stop();
-            play(audio, bell);
+            play(bell);
         } else {
             clock.innerHTML = formatTime(remainingTime);
             // setInterval() だとバックグランドタブにて、
@@ -503,8 +503,8 @@ const start = (clock, progress, audio, bell) => {
     requestAnimationFrame(doStart);
 }
 
-const play = (audio, base64) => {
-    audio.src = 'data:audio/mp3;base64,' + base64;
+const play = (base64) => {
+    let audio = new Audio('data:audio/mp3;base64,' + base64);
     audio.play();
 }
 
@@ -632,7 +632,6 @@ __webpack_require__.r(__webpack_exports__);
 const minutes = document.getElementById('minutes');
 const clock = document.getElementById('clock');
 const progress = document.getElementById('progress');
-const audio = document.getElementById('audio');
 const startBtn = document.getElementById('start');
 const stopBtn = document.getElementById('stop');
 const resetBtn = document.getElementById('reset');
@@ -645,7 +644,7 @@ minutes?.addEventListener('click', () => {
     (0,_timer__WEBPACK_IMPORTED_MODULE_1__.setTimer)(clock, progress, minutes.value * 60 * 1000);
 });
 startBtn?.addEventListener('click', () => {
-    (0,_timer__WEBPACK_IMPORTED_MODULE_1__.start)(clock, progress, audio, _bell__WEBPACK_IMPORTED_MODULE_2__.bell);
+    (0,_timer__WEBPACK_IMPORTED_MODULE_1__.start)(clock, progress, _bell__WEBPACK_IMPORTED_MODULE_2__.bell);
     minutes.disabled = true;
 });
 stopBtn?.addEventListener('click', () => {
