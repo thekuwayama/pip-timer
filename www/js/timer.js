@@ -20,7 +20,7 @@ const setTimer = (clock, progress, time) => {
     loadProgress(progress);
 }
 
-const start = (clock, progress, audio, bell) => {
+const start = (clock, progress, bell) => {
     if (requestID) return;
     if (remainingTime == 0) return;
 
@@ -32,7 +32,7 @@ const start = (clock, progress, audio, bell) => {
             clock.innerHTML = formatTime(remainingTime);
             loadProgress(progress);
             stop();
-            play(audio, bell);
+            play(bell);
         } else {
             clock.innerHTML = formatTime(remainingTime);
             // setInterval() だとバックグランドタブにて、
@@ -45,8 +45,8 @@ const start = (clock, progress, audio, bell) => {
     requestAnimationFrame(doStart);
 }
 
-const play = (audio, base64) => {
-    audio.src = 'data:audio/mp3;base64,' + base64;
+const play = (base64) => {
+    let audio = new Audio('data:audio/mp3;base64,' + base64);
     audio.play();
 }
 

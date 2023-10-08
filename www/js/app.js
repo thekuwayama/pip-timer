@@ -9,10 +9,6 @@ const startBtn = document.getElementById('start');
 const stopBtn = document.getElementById('stop');
 const resetBtn = document.getElementById('reset');
 
-// PiP の場合バックグラウンドタブ で new Audio しても音を鳴らせない。
-// document 側で audio Element を作成して、PiP に渡せば鳴らせます。
-let audio = document.createElement('audio');
-
 minutes?.addEventListener('click', () => {
     if (isStarted()) {
         return
@@ -21,7 +17,7 @@ minutes?.addEventListener('click', () => {
     setTimer(clock, progress, minutes.value * 60 * 1000);
 });
 startBtn?.addEventListener('click', () => {
-    start(clock, progress, audio, bell);
+    start(clock, progress, bell);
     minutes.disabled = true;
 });
 stopBtn?.addEventListener('click', () => {
