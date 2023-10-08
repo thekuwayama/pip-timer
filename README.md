@@ -27,6 +27,7 @@ $ npm run start
 
 - https://caniuse.com/mdn-api_documentpictureinpicture_requestwindow
 - https://caniuse.com/progress
+- https://caniuse.com/audio-api
 
 
 ## License
