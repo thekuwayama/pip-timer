@@ -504,8 +504,19 @@ const start = (clock, progress, bell) => {
 }
 
 const play = (base64) => {
-    let audio = new Audio('data:audio/mp3;base64,' + base64);
-    audio.play();
+    const ctx = new window.AudioContext();
+    const src = ctx.createBufferSource();
+
+    fetch('data:audio/mp3;base64,' + base64)
+        .then(response => response.blob())
+        .then(blob => blob.arrayBuffer())
+        .then(data => ctx.decodeAudioData(data))
+        .then(audioBuffer => {
+            src.buffer = audioBuffer;
+            src.connect(ctx.destination);
+            src.start(0);
+        })
+        .catch(err => console.error(err));
 }
 
 const stop = () => {
