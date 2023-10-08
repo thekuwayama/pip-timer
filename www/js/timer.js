@@ -10,16 +10,17 @@ const formatTime = (time) => {
     return minutes + ':' + seconds;
 }
 
-const setTimer = (target, time) => {
+const setTimer = (clock, progress, time) => {
     if (defaultRemainingTime != time) {
         defaultRemainingTime = time;
     }
 
     remainingTime = time;
-    target.innerHTML = formatTime(time);
+    clock.innerHTML = formatTime(time);
+    loadProgress(progress);
 }
 
-const start = (target, audio, bell) => {
+const start = (clock, progress, audio, bell) => {
     if (requestID) return;
     if (remainingTime == 0) return;
 
@@ -28,13 +29,15 @@ const start = (target, audio, bell) => {
         remainingTime = endTime - Date.now();
         if (remainingTime <= 0) {
             remainingTime = 0;
-            target.innerHTML = formatTime(remainingTime);
+            clock.innerHTML = formatTime(remainingTime);
+            loadProgress(progress);
             stop();
             play(audio, bell);
         } else {
-            target.innerHTML = formatTime(remainingTime);
+            clock.innerHTML = formatTime(remainingTime);
             // setInterval() だとバックグランドタブにて、
             // スロットリングされしまうため requestAnimationFrame() を使用します。
+            loadProgress(progress);
             requestID = requestAnimationFrame(doStart);
         }
     };
@@ -62,6 +65,10 @@ const reset = () => {
 
 const isStarted = () => {
     return remainingTime != defaultRemainingTime;
+}
+
+const loadProgress = (progress) => {
+    progress.value = remainingTime / defaultRemainingTime * 100;
 }
 
 export { start, stop, reset, setTimer, isStarted }

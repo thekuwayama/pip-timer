@@ -3,7 +3,8 @@ import { start, stop, reset, setTimer, isStarted } from './timer'
 import { bell } from './bell'
 
 const minutes = document.getElementById('minutes');
-const time = document.getElementById('time');
+const clock = document.getElementById('clock');
+const progress = document.getElementById('progress');
 const startBtn = document.getElementById('start');
 const stopBtn = document.getElementById('stop');
 const resetBtn = document.getElementById('reset');
@@ -17,10 +18,10 @@ minutes?.addEventListener('click', () => {
         return
     }
 
-    setTimer(time, minutes.value * 60 * 1000);
+    setTimer(clock, progress, minutes.value * 60 * 1000);
 });
 startBtn?.addEventListener('click', () => {
-    start(time, audio, bell);
+    start(clock, progress, audio, bell);
     minutes.disabled = true;
 });
 stopBtn?.addEventListener('click', () => {
@@ -28,8 +29,8 @@ stopBtn?.addEventListener('click', () => {
     minutes.disabled = false;
 });
 resetBtn?.addEventListener('click', () => {
-    reset(time);
-    setTimer(time, minutes.value * 60 * 1000);
+    reset(clock);
+    setTimer(clock, progress, minutes.value * 60 * 1000);
     minutes.disabled = false;
 });
 
@@ -46,10 +47,10 @@ open.addEventListener('click', async () => {
     open.disabled = true;
 
     const minutes = pipWindow.document.getElementById('minutes');
-    const time = pipWindow.document.getElementById('time');
+    const clock = pipWindow.document.getElementById('clock');
 
     if (!isStarted()) {
-        setTimer(time, minutes.value * 60 * 1000);
+        setTimer(clock, progress, minutes.value * 60 * 1000);
     }
 
     // close PiP

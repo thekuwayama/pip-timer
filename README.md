@@ -26,6 +26,7 @@ $ npm run start
 `pip-timer` is compatible with the following web browsers:
 
 - https://caniuse.com/mdn-api_documentpictureinpicture_requestwindow
+- https://caniuse.com/progress
 
 
 ## License
