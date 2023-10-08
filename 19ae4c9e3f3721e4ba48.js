@@ -468,16 +468,17 @@ const formatTime = (time) => {
     return minutes + ':' + seconds;
 }
 
-const setTimer = (target, time) => {
+const setTimer = (clock, progress, time) => {
     if (defaultRemainingTime != time) {
         defaultRemainingTime = time;
     }
 
     remainingTime = time;
-    target.innerHTML = formatTime(time);
+    clock.innerHTML = formatTime(time);
+    loadProgress(progress);
 }
 
-const start = (target, audio, bell) => {
+const start = (clock, progress, audio, bell) => {
     if (requestID) return;
     if (remainingTime == 0) return;
 
@@ -486,13 +487,15 @@ const start = (target, audio, bell) => {
         remainingTime = endTime - Date.now();
         if (remainingTime <= 0) {
             remainingTime = 0;
-            target.innerHTML = formatTime(remainingTime);
+            clock.innerHTML = formatTime(remainingTime);
+            loadProgress(progress);
             stop();
             play(audio, bell);
         } else {
-            target.innerHTML = formatTime(remainingTime);
+            clock.innerHTML = formatTime(remainingTime);
             // setInterval() だとバックグランドタブにて、
             // スロットリングされしまうため requestAnimationFrame() を使用します。
+            loadProgress(progress);
             requestID = requestAnimationFrame(doStart);
         }
     };
@@ -520,6 +523,10 @@ const reset = () => {
 
 const isStarted = () => {
     return remainingTime != defaultRemainingTime;
+}
+
+const loadProgress = (progress) => {
+    progress.value = remainingTime / defaultRemainingTime * 100;
 }
 
 
@@ -623,7 +630,8 @@ __webpack_require__.r(__webpack_exports__);
 
 
 const minutes = document.getElementById('minutes');
-const time = document.getElementById('time');
+const clock = document.getElementById('clock');
+const progress = document.getElementById('progress');
 const startBtn = document.getElementById('start');
 const stopBtn = document.getElementById('stop');
 const resetBtn = document.getElementById('reset');
@@ -637,10 +645,10 @@ minutes?.addEventListener('click', () => {
         return
     }
 
-    (0,_timer__WEBPACK_IMPORTED_MODULE_1__.setTimer)(time, minutes.value * 60 * 1000);
+    (0,_timer__WEBPACK_IMPORTED_MODULE_1__.setTimer)(clock, progress, minutes.value * 60 * 1000);
 });
 startBtn?.addEventListener('click', () => {
-    (0,_timer__WEBPACK_IMPORTED_MODULE_1__.start)(time, audio, _bell__WEBPACK_IMPORTED_MODULE_2__.bell);
+    (0,_timer__WEBPACK_IMPORTED_MODULE_1__.start)(clock, progress, audio, _bell__WEBPACK_IMPORTED_MODULE_2__.bell);
     minutes.disabled = true;
 });
 stopBtn?.addEventListener('click', () => {
@@ -648,8 +656,8 @@ stopBtn?.addEventListener('click', () => {
     minutes.disabled = false;
 });
 resetBtn?.addEventListener('click', () => {
-    (0,_timer__WEBPACK_IMPORTED_MODULE_1__.reset)(time);
-    (0,_timer__WEBPACK_IMPORTED_MODULE_1__.setTimer)(time, minutes.value * 60 * 1000);
+    (0,_timer__WEBPACK_IMPORTED_MODULE_1__.reset)(clock);
+    (0,_timer__WEBPACK_IMPORTED_MODULE_1__.setTimer)(clock, progress, minutes.value * 60 * 1000);
     minutes.disabled = false;
 });
 
@@ -666,10 +674,10 @@ open.addEventListener('click', async () => {
     open.disabled = true;
 
     const minutes = pipWindow.document.getElementById('minutes');
-    const time = pipWindow.document.getElementById('time');
+    const clock = pipWindow.document.getElementById('clock');
 
     if (!(0,_timer__WEBPACK_IMPORTED_MODULE_1__.isStarted)()) {
-        (0,_timer__WEBPACK_IMPORTED_MODULE_1__.setTimer)(time, minutes.value * 60 * 1000);
+        (0,_timer__WEBPACK_IMPORTED_MODULE_1__.setTimer)(clock, progress, minutes.value * 60 * 1000);
     }
 
     // close PiP
