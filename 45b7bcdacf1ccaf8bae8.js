@@ -632,13 +632,10 @@ __webpack_require__.r(__webpack_exports__);
 const minutes = document.getElementById('minutes');
 const clock = document.getElementById('clock');
 const progress = document.getElementById('progress');
+const audio = document.getElementById('audio');
 const startBtn = document.getElementById('start');
 const stopBtn = document.getElementById('stop');
 const resetBtn = document.getElementById('reset');
-
-// PiP の場合バックグラウンドタブ で new Audio しても音を鳴らせない。
-// document 側で audio Element を作成して、PiP に渡せば鳴らせます。
-let audio = document.createElement('audio');
 
 minutes?.addEventListener('click', () => {
     if ((0,_timer__WEBPACK_IMPORTED_MODULE_1__.isStarted)()) {
