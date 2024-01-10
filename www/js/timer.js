@@ -20,7 +20,7 @@ const setTimer = (clock, progress, time) => {
     loadProgress(progress);
 }
 
-const start = (clock, progress, bell) => {
+const start = (clock, progress, bell, isMuted) => {
     if (requestID) return;
     if (remainingTime == 0) return;
 
@@ -32,7 +32,9 @@ const start = (clock, progress, bell) => {
             clock.innerHTML = formatTime(remainingTime);
             loadProgress(progress);
             stop();
-            play(bell);
+            if (!isMuted()) {
+                play(bell);
+            }
         } else {
             clock.innerHTML = formatTime(remainingTime);
             // setInterval() だとバックグランドタブにて、
