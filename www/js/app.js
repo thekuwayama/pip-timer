@@ -8,6 +8,11 @@ const progress = document.getElementById('progress');
 const startBtn = document.getElementById('start');
 const stopBtn = document.getElementById('stop');
 const resetBtn = document.getElementById('reset');
+let isMutedBtn = document.getElementById('isMuted');
+
+const isMuted = () => {
+    return isMutedBtn.checked;
+}
 
 minutes?.addEventListener('click', () => {
     if (isStarted()) {
@@ -17,7 +22,7 @@ minutes?.addEventListener('click', () => {
     setTimer(clock, progress, minutes.value * 60 * 1000);
 });
 startBtn?.addEventListener('click', () => {
-    start(clock, progress, bell);
+    start(clock, progress, bell, isMuted);
     minutes.disabled = true;
 });
 stopBtn?.addEventListener('click', () => {
@@ -25,7 +30,7 @@ stopBtn?.addEventListener('click', () => {
     minutes.disabled = false;
 });
 resetBtn?.addEventListener('click', () => {
-    reset(clock);
+    reset();
     setTimer(clock, progress, minutes.value * 60 * 1000);
     minutes.disabled = false;
 });
@@ -41,6 +46,7 @@ open.addEventListener('click', async () => {
     timer.removeAttribute('style');
     pipWindow.document.body.append(timer);
     open.disabled = true;
+    isMutedBtn = pipWindow.document.getElementById('isMuted');
 
     const minutes = pipWindow.document.getElementById('minutes');
     const clock = pipWindow.document.getElementById('clock');
@@ -58,5 +64,6 @@ open.addEventListener('click', async () => {
         timer.style.display = 'none';
         container?.append(timer);
         open.disabled = false;
+        isMutedBtn = document.getElementById('isMuted');
     });
 });
