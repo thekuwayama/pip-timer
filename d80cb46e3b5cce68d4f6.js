@@ -478,7 +478,7 @@ const setTimer = (clock, progress, time) => {
     loadProgress(progress);
 }
 
-const start = (clock, progress, bell) => {
+const start = (clock, progress, bell, isMuted) => {
     if (requestID) return;
     if (remainingTime == 0) return;
 
@@ -490,7 +490,9 @@ const start = (clock, progress, bell) => {
             clock.innerHTML = formatTime(remainingTime);
             loadProgress(progress);
             stop();
-            play(bell);
+            if (!isMuted()) {
+                play(bell);
+            }
         } else {
             clock.innerHTML = formatTime(remainingTime);
             // setInterval() だとバックグランドタブにて、
@@ -646,6 +648,11 @@ const progress = document.getElementById('progress');
 const startBtn = document.getElementById('start');
 const stopBtn = document.getElementById('stop');
 const resetBtn = document.getElementById('reset');
+let isMutedBtn = document.getElementById('isMuted');
+
+const isMuted = () => {
+    return isMutedBtn.checked;
+}
 
 minutes?.addEventListener('click', () => {
     if ((0,_timer__WEBPACK_IMPORTED_MODULE_1__.isStarted)()) {
@@ -655,7 +662,7 @@ minutes?.addEventListener('click', () => {
     (0,_timer__WEBPACK_IMPORTED_MODULE_1__.setTimer)(clock, progress, minutes.value * 60 * 1000);
 });
 startBtn?.addEventListener('click', () => {
-    (0,_timer__WEBPACK_IMPORTED_MODULE_1__.start)(clock, progress, _bell__WEBPACK_IMPORTED_MODULE_2__.bell);
+    (0,_timer__WEBPACK_IMPORTED_MODULE_1__.start)(clock, progress, _bell__WEBPACK_IMPORTED_MODULE_2__.bell, isMuted);
     minutes.disabled = true;
 });
 stopBtn?.addEventListener('click', () => {
@@ -663,7 +670,7 @@ stopBtn?.addEventListener('click', () => {
     minutes.disabled = false;
 });
 resetBtn?.addEventListener('click', () => {
-    (0,_timer__WEBPACK_IMPORTED_MODULE_1__.reset)(clock);
+    (0,_timer__WEBPACK_IMPORTED_MODULE_1__.reset)();
     (0,_timer__WEBPACK_IMPORTED_MODULE_1__.setTimer)(clock, progress, minutes.value * 60 * 1000);
     minutes.disabled = false;
 });
@@ -679,6 +686,7 @@ open.addEventListener('click', async () => {
     timer.removeAttribute('style');
     pipWindow.document.body.append(timer);
     open.disabled = true;
+    isMutedBtn = pipWindow.document.getElementById('isMuted');
 
     const minutes = pipWindow.document.getElementById('minutes');
     const clock = pipWindow.document.getElementById('clock');
@@ -696,6 +704,7 @@ open.addEventListener('click', async () => {
         timer.style.display = 'none';
         container?.append(timer);
         open.disabled = false;
+        isMutedBtn = document.getElementById('isMuted');
     });
 });
 
